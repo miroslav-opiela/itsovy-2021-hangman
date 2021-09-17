@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Hangman</string>
+    <string-array name="dictionary">
+        <item>android</item>
+        <item>hello</item>
+        <item>mississippi</item>
+        <item>abeceda</item>
+        <item>cniospeisdanklsan</item>
+        <item>ja</item>
+
+    </string-array>
 </resources>
