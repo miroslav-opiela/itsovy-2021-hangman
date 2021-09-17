@@ -2,6 +2,8 @@
     <string name="app_name">Hangman</string>
     <string name="gallows_image">Gallows Image</string>
     <string name="insert_a_letter">Insert a letter</string>
+    <string name="toast_insert_a_letter">Insert a letter!</string>
+    <string name="toast_message">Other characters are not allowed!</string>
     <string-array name="dictionary">
         <item>android</item>
         <item>hello</item>
