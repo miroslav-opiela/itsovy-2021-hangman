@@ -1,8 +1,11 @@
 package sk.itsovy.android.hangman;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private static final ColorFilter LOST_GAME = new LightingColorFilter(Color.RED, Color.BLACK);
 
     private static final String BUNDLE_KEY = "game";
+    private static final String BEST_TIME_KEY = "best time";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
                 // ak sme uhadli a vyhrali hru
                 if (game.isWon()){
                     imageView.setColorFilter(WON_GAME);
+                    if (game instanceof HangmanGame) {
+                        HangmanGame g = (HangmanGame) game;
+                        updateBestTime(g.getTime());
+                    }
                 }
             } else {
                 updateImage();
@@ -120,5 +128,28 @@ public class MainActivity extends AppCompatActivity {
     private void updateImage() {
         int index = Game.DEFAULT_ATTEMPTS_LEFT - game.getAttemptsLeft();
         imageView.setImageResource(gallowsIds[index]);
+    }
+
+    // skontrolujem ci mam lepsi cas a aktualizujem ulozenu hodnotu
+    private void updateBestTime(long time) {
+        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+        // ak tam hodnota nie je, tak berie default hodnotu MAX_VALUE
+        long bestTime = pref.getLong(BEST_TIME_KEY, Long.MAX_VALUE);
+        if (time < bestTime) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putLong(BEST_TIME_KEY, time);
+            editor.apply();
+            announceNewBestTime(time);
+        }
+    }
+
+    private void announceNewBestTime(long time) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.new_best_time);
+        builder.setMessage(getString(R.string.your_time_is, time));
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //builder.setTitle("title").setMessage("mess").create().show();
     }
 }

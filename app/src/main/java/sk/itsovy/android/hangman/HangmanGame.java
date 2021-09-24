@@ -1,5 +1,7 @@
 package sk.itsovy.android.hangman;
 
+import android.os.SystemClock;
+
 import java.util.Random;
 
 public class HangmanGame implements Game {
@@ -12,6 +14,8 @@ public class HangmanGame implements Game {
 
     private int attemptsLeft = DEFAULT_ATTEMPTS_LEFT;
 
+    private long startTime;
+
     public HangmanGame(String[] words, Random random) {
         int index = random.nextInt(words.length);
         word = words[index];
@@ -20,6 +24,11 @@ public class HangmanGame implements Game {
         for (int i = 0; i < word.length(); i++) {
             uncoveredWord.append(UNGUESSED_CHAR);
         }
+        startTime = SystemClock.elapsedRealtime();
+    }
+
+    public long getTime() {
+        return SystemClock.elapsedRealtime() - startTime;
     }
 
     @Override

@@ -4,6 +4,8 @@
     <string name="insert_a_letter">Insert a letter</string>
     <string name="toast_insert_a_letter">Insert a letter!</string>
     <string name="toast_message">Other characters are not allowed!</string>
+    <string name="new_best_time">NEW BEST TIME</string>
+    <string name="your_time_is">Your time is %dms</string>
     <string-array name="dictionary">
         <item>android</item>
         <item>hello</item>
