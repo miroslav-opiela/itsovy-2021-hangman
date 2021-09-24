@@ -1,5 +1,6 @@
 package sk.itsovy.android.hangman;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private static final ColorFilter WON_GAME = new LightingColorFilter(Color.GREEN, Color.BLACK);
     private static final ColorFilter LOST_GAME = new LightingColorFilter(Color.RED, Color.BLACK);
 
+    private static final String BUNDLE_KEY = "game";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +46,20 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textViewGuessedWord);
         editText = findViewById(R.id.editTextLetter);
 
-        restartGame();
+        if (savedInstanceState == null) {
+            restartGame();
+        } else {
+            game = (Game) savedInstanceState.getSerializable(BUNDLE_KEY);
+            updateImage();
+            updateText();
+        }
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(BUNDLE_KEY, game);
     }
 
     private void restartGame() {
