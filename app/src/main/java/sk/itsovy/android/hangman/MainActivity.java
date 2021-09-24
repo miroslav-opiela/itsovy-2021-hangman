@@ -2,6 +2,9 @@ package sk.itsovy.android.hangman;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -29,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.gallows6
     };
 
+    private static final ColorFilter WON_GAME = new LightingColorFilter(Color.GREEN, Color.BLACK);
+    private static final ColorFilter LOST_GAME = new LightingColorFilter(Color.RED, Color.BLACK);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         game = new HangmanGame(words, new Random());
         updateText();
         updateImage();
+        imageView.setColorFilter(null);
     }
 
     public void onImageClick(View view) {
@@ -68,8 +75,17 @@ public class MainActivity extends AppCompatActivity {
             boolean success = game.guess(letter);
             if (success) {
                 updateText();
+                // ak sme uhadli a vyhrali hru
+                if (game.isWon()){
+                    imageView.setColorFilter(WON_GAME);
+                }
             } else {
                 updateImage();
+                // ak sme neuhadli a prehrali hru
+                if (game.getAttemptsLeft() == 0) {
+                    imageView.setColorFilter(LOST_GAME);
+                    textView.setText(game.getChallengeWord());
+                }
             }
         } else {
            // nie je to pismeno
