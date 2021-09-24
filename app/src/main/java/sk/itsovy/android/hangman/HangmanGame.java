@@ -25,7 +25,8 @@ public class HangmanGame implements Game {
     @Override
     public boolean isWon() {
         // alternativne zistit ci uncoveredWord neobsahuje znak '_'
-        return word.equals(uncoveredWord);
+        // pozor - musim porovnavat string a string
+        return word.equals(uncoveredWord.toString());
     }
 
     @Override

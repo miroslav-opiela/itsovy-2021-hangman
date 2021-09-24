@@ -37,14 +37,24 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textViewGuessedWord);
         editText = findViewById(R.id.editTextLetter);
 
-        String[] words = getResources().getStringArray(R.array.dictionary);
-
-        game = new HangmanGame(words, new Random());
-        updateText();
+        restartGame();
 
     }
 
+    private void restartGame() {
+        String[] words = getResources().getStringArray(R.array.dictionary);
+        game = new HangmanGame(words, new Random());
+        updateText();
+        updateImage();
+    }
+
     public void onImageClick(View view) {
+        // je vyhra alebo prehra
+        if (game.getAttemptsLeft() == 0 || game.isWon()) {
+            restartGame();
+            return;
+        }
+
         CharSequence text = editText.getText();
         // ak nebolo zadane pismeno na hadanie
         if (text == null || text.length() == 0) {
